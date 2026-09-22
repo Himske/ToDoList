@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="ToDoList/ToDoList.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="ToDoList.Tests/ToDoList.Tests.csproj" Id="03743167-dd05-4920-b9eb-53e8952d943c" />
+  </Folder>
+  <Project Path="ToDoList.csproj" Id="a27e97c7-8cc8-46d2-8743-51110600fbb7" />
+</Solution>
