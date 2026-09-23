@@ -26,26 +26,34 @@ namespace ToDoList {
         }
         
         public static void AddToDo(string title, DateTime dueDate, Status status, string project) {
+            // Maybe status should always be "Not Started" when adding a todo
             int newId = GetNextAvailableId();
             ToDoList.Add(new ToDo(newId, title, dueDate, status, project));
         }
 
-        public static void EditToDo() { }
+        public static ToDo GetTask(int id) {
+            ToDo task = ToDoList.Find(t => t.Id == id) ?? throw new ArgumentException($"There is no task with Id: {id}");
+            return task;
+        }
+
+        public static void UpdateToDo(int id, string title, DateTime dueDate, string project) {
+            ToDo task = ToDoList.Find(t => t.Id == id) ?? throw new ArgumentException($"There is no task with Id: {id}");
+            task.Title = title;
+            task.DueDate = dueDate;
+            task.Project = project;
+            task.UpdateDate = DateTime.Now;
+        }
 
         public static void RemoveToDo(int id) {
-            ToDo? task = ToDoList.Find(t => t.Id == id);
-            if (task != null) {
-                ToDoList.Remove(task);
-            }
+            ToDo task = ToDoList.Find(t => t.Id == id) ?? throw new ArgumentException($"There is no task with Id: {id}");
+            ToDoList.Remove(task);
         }
 
         public static void UpdateStatus(int id, Status status) {
-            ToDo? task = ToDoList.Find(t => t.Id == id);
-            if (task != null) {
-                task.Status = status;
-                task.UpdateDate = DateTime.Now;
-            }
-         }
+            ToDo task = ToDoList.Find(t => t.Id == id) ?? throw new ArgumentException($"There is no task with Id: {id}");
+            task.Status = status;
+            task.UpdateDate = DateTime.Now;
+        }
 
         public static string Save() {
             try {

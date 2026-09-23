@@ -20,9 +20,5 @@ namespace ToDoList {
         public string Project { get; set; } = string.Empty;
 
         public DateTime UpdateDate { get; set; } = DateTime.Now;
-
-        public override string ToString() {
-            return $"{Id} {Project} {Title} {Status.ToString().Replace("_", " ")} {DueDate:yyyy-MM-dd hh:mm}";
-        }
     }
 }

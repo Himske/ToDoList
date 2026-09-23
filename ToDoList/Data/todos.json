@@ -22,5 +22,21 @@
     "Status": 5,
     "Project": "Arbetsmarknadsutbildning",
     "UpdateDate": "2026-09-22T08:38:46.8945431+02:00"
+  },
+  {
+    "Id": 1,
+    "Title": "Learn SQL",
+    "DueDate": "2026-12-01T00:00:00",
+    "Status": 0,
+    "Project": "New Skills",
+    "UpdateDate": "2026-09-22T15:28:21.7738491+02:00"
+  },
+  {
+    "Id": 2,
+    "Title": "Fix the world",
+    "DueDate": "2000-01-01T00:00:00",
+    "Status": 0,
+    "Project": "God",
+    "UpdateDate": "2026-09-22T15:30:09.2777533+02:00"
   }
 ]

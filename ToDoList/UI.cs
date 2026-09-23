@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic.FileIO;
+﻿using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -23,6 +24,9 @@ namespace ToDoList {
                     AddTask();
                     break;
                 case "3":
+                    Console.Clear();
+                    ShowAppName();
+                    EditTask();
                     break;
                 case "4":
                     SaveToDoList();
@@ -86,12 +90,6 @@ namespace ToDoList {
             }
         }
 
-        public static string GetInput(string prompt) {
-            Console.Write(prompt);
-            string input = Console.ReadLine() ?? string.Empty;
-            return input.Trim();
-        }
-
         public static void ShowListHeadings() {
             Console.ForegroundColor= ConsoleColor.White;
             Console.WriteLine("Id".PadRight(5) + "Title".PadRight(30) + "Due Date".PadRight(11) + "Status".PadRight(15) + "Project");
@@ -106,11 +104,14 @@ namespace ToDoList {
             if (task.DueDate > DateTime.Now && task.Status == Status.Done) {
                 Console.ForegroundColor = ConsoleColor.Green;
             }
-            else if (task.DueDate < DateTime.Now || task.Status == Status.Done) {
+            else if (task.DueDate < DateTime.Now && task.Status != Status.Done) {
+                Console.ForegroundColor = ConsoleColor.Red;
+            }
+            else if (task.Status == Status.Canceled) {
                 Console.ForegroundColor = ConsoleColor.DarkGray;
             }
-            else if (task.Status == Status.Canceled || task.Status == Status.Blocked) {
-                Console.ForegroundColor = ConsoleColor.Red;
+            else if (task.Status == Status.Blocked || task.Status == Status.On_Hold) {
+                Console.ForegroundColor = ConsoleColor.Yellow;
             }
             ShowListRow(task);
             Console.ResetColor();
@@ -144,7 +145,7 @@ namespace ToDoList {
         public static void ShowMainMenu() {
             Console.WriteLine("1. Show Task List (by date or project)");
             Console.WriteLine("2. Add New Task");
-            Console.WriteLine("3. Edit Task (update, mark as done, remove");
+            Console.WriteLine("3. Edit Task (update/remove)");
             Console.WriteLine("4. Save and Quit");
         }
 
@@ -154,8 +155,8 @@ namespace ToDoList {
         }
 
         public static void ShowEditMenu() {
-            Console.WriteLine("1. Update Task");
-            Console.WriteLine("2. Mark as Done");
+            Console.WriteLine("1. Update Task (Title, Due Date or Project)");
+            Console.WriteLine("2. Change Task Status");
             Console.WriteLine("3. Remove");
         }
 
@@ -191,21 +192,37 @@ namespace ToDoList {
 
         }
 
-        public static string GetStringInput(string prompt) {
-            string title = GetInput($"{prompt}: ");
-            if (title.Equals(string.Empty)) {
-                throw new NoNullAllowedException($"{prompt} can't be empty!");
-            }
-            return title;
+        public static string GetInput(string prompt) {
+            Console.Write(prompt);
+            string input = Console.ReadLine() ?? string.Empty;
+            return input.Trim();
         }
 
-        public static DateTime GetDueDate() {
-            string dueDateStr = GetInput("Due Date (YYYY-MM-DD): ");
-            if (dueDateStr.Equals(string.Empty)) {
+        public static string GetStringInput(string prompt, bool editing = false) {
+            string input = GetInput($"{prompt}: ");
+            if (!editing && input.Equals(string.Empty)) {
+                throw new NoNullAllowedException($"{prompt} can't be empty!");
+            }
+            return input;
+        }
+
+        public static int GetIntInput(string prompt) {
+            string input = GetInput($"{prompt}: ");
+            if (input.Equals(string.Empty)) {
+                throw new NoNullAllowedException($"{prompt} can't be empty!");
+            }
+            if (!int.TryParse(input, out int result)) {
+                throw new ArgumentException($"{input} is not valid number!");
+            }
+            return result;
+        }
+
+        public static DateTime GetDueDate(string input) {
+            if (input.Equals(string.Empty)) {
                 throw new ArgumentException("Due Date can't be empty!");
             }
-            if (!DateTime.TryParse(dueDateStr, out  DateTime dueDate)) {
-                throw new ArgumentException($"{dueDateStr} is not a valid date!");
+            if (!DateTime.TryParse(input, out  DateTime dueDate)) {
+                throw new ArgumentException($"{input} is not a valid date!");
             }
             return dueDate;
         }
@@ -213,7 +230,8 @@ namespace ToDoList {
         public static void AddTask() {
             try {
                 string title = GetStringInput("Title");
-                DateTime dueDate = GetDueDate();
+                string dueDateStr = GetStringInput("Due Date(YYYY-MM-DD)");
+                DateTime dueDate = GetDueDate(dueDateStr);
                 string project = GetStringInput("Project");
                 ToDoListManager.AddToDo(title, dueDate, Status.Not_Started, project);
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -228,6 +246,100 @@ namespace ToDoList {
             Console.ResetColor();
             Console.WriteLine();
             Pause();
+        }
+
+        public static void EditTask() {
+            ShowEditMenu();
+            Console.WriteLine();
+            string option = GetInput("Select Option: ");
+            Console.WriteLine();
+            switch (option) {
+                case "1":
+                    UpdateTask();
+                    Console.WriteLine();
+                    Pause();
+                    break;
+                case "2":
+                    ChangeTaskStatus();
+                    Console.WriteLine();
+                    Pause();
+                    break;
+                case "3":
+                    RemoveTask();
+                    Console.WriteLine();
+                    Pause();
+                    break;
+                default:
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"{option} is not a valid option!");
+                    Console.ResetColor();
+                    Console.WriteLine();
+                    Pause();
+                    break;
+            }
+        }
+
+        private static void UpdateTask() {
+            int id = GetIntInput("Id");
+            try {
+                ToDo task = ToDoListManager.GetTask(id);
+                Console.WriteLine();
+                ShowListHeadings();
+                ShowListRow(task);
+                Console.WriteLine();
+                string input = GetStringInput("Is this the task you want to update?", true);
+                Console.WriteLine();
+                if (input.ToUpper().Equals("Y")) {
+                    string newTitle = GetStringInput("Title", true);
+                    if (newTitle.Equals(string.Empty)) {
+                        newTitle = task.Title;
+                    }
+                    DateTime newDueDate;
+                    string newDueDateStr = GetStringInput("Due Date(YYYY-MM-DD)", true);
+                    if (newDueDateStr.Equals(string.Empty)) {
+                        newDueDate = task.DueDate;
+                    }
+                    else {
+                        newDueDate = GetDueDate(newDueDateStr);
+                    }
+                    string newProject = GetStringInput("Project", true);
+                    if (newProject.Equals(string.Empty)) {
+                        newProject = task.Project;
+                    }
+                    if (newTitle != task.Title || newDueDate != task.DueDate || newProject != task.Project) {
+                        ToDoListManager.UpdateToDo(task.Id, newTitle, newDueDate, newProject);
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine();
+                        Console.WriteLine("Task updated successfully.");
+                        Console.ResetColor();
+                    }
+                    else {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine();
+                        Console.WriteLine("No changes were made.");
+                        Console.ResetColor();
+                    }
+                }
+                else {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("No changes were made.");
+                    Console.ResetColor();
+                }
+            }
+            catch (Exception ex) {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine();
+                Console.WriteLine(ex.Message);
+                Console.ResetColor();
+            }
+        }
+
+        private static void ChangeTaskStatus() {
+            Console.WriteLine("Changing Status");
+        }
+
+        private static void RemoveTask() {
+            Console.WriteLine("Remove Task");
         }
     }
 }
