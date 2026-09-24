@@ -44,9 +44,8 @@ namespace ToDoList {
             task.UpdateDate = DateTime.Now;
         }
 
-        public static void RemoveToDo(int id) {
-            ToDo task = ToDoList.Find(t => t.Id == id) ?? throw new ArgumentException($"There is no task with Id: {id}");
-            ToDoList.Remove(task);
+        public static bool RemoveToDo(ToDo task) {
+            return ToDoList.Remove(task);
         }
 
         public static void UpdateStatus(int id, Status status) {

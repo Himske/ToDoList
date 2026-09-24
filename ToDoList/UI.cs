@@ -157,7 +157,7 @@ namespace ToDoList {
         public static void ShowEditMenu() {
             Console.WriteLine("1. Update Task (Title, Due Date or Project)");
             Console.WriteLine("2. Change Task Status");
-            Console.WriteLine("3. Remove");
+            Console.WriteLine("3. Remove Task");
         }
 
         public static void Pause() {
@@ -280,8 +280,8 @@ namespace ToDoList {
         }
 
         private static void UpdateTask() {
-            int id = GetIntInput("Id");
             try {
+                int id = GetIntInput("Id");
                 ToDo task = ToDoListManager.GetTask(id);
                 Console.WriteLine();
                 ShowListHeadings();
@@ -311,35 +311,99 @@ namespace ToDoList {
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine();
                         Console.WriteLine("Task updated successfully.");
-                        Console.ResetColor();
                     }
                     else {
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine();
                         Console.WriteLine("No changes were made.");
-                        Console.ResetColor();
                     }
                 }
                 else {
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("No changes were made.");
-                    Console.ResetColor();
                 }
             }
             catch (Exception ex) {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine();
                 Console.WriteLine(ex.Message);
+            }
+            finally {
                 Console.ResetColor();
             }
         }
 
         private static void ChangeTaskStatus() {
-            Console.WriteLine("Changing Status");
+            try {
+                int id = GetIntInput("Id");
+                ToDo task = ToDoListManager.GetTask(id);
+                Console.WriteLine();
+                ShowListHeadings();
+                ShowListRow(task);
+                Console.WriteLine();
+                string input = GetStringInput("Is this the task you want to update?", true);
+                Console.WriteLine();
+                if (input.ToUpper().Equals("Y")) {
+                    List<string> statuses = [.. Enum.GetNames<Status>()];
+                    for (int i=0; i < Enum.GetNames<Status>().Length; i++) {
+                        Console.WriteLine($"{i}. {statuses[i]}");
+                    }
+                    Console.WriteLine();
+                    Char newStatus = Char.Parse(GetStringInput("New status"));
+                    if (newStatus < '0' || newStatus > '6') {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine();
+                        Console.WriteLine("Invalid status");
+                    }
+                    else if(Enum.TryParse<Status>(newStatus.ToString(), out var status)) {
+                        ToDoListManager.UpdateStatus(id, status);
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine();
+                        Console.WriteLine("Status updated successfully.");
+                    }
+                }
+                else {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Status wasn't changed.");
+                }
+            }
+            catch (Exception ex) {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine();
+                Console.WriteLine(ex.Message);
+            }
+            finally {
+                Console.ResetColor();
+            }
         }
 
         private static void RemoveTask() {
-            Console.WriteLine("Remove Task");
+            try {
+                int id = GetIntInput("Id");
+                ToDo task = ToDoListManager.GetTask(id);
+                Console.WriteLine();
+                ShowListHeadings();
+                ShowListRow(task);
+                Console.WriteLine();
+                string input = GetStringInput("Is this the task you want to remove?", true);
+                Console.WriteLine();
+                if (input.ToUpper().Equals("Y") && ToDoListManager.RemoveToDo(task)) {
+                    Console.ForegroundColor= ConsoleColor.Green;
+                    Console.WriteLine($"Task: \"{task.Title}\" removed successfully.");
+                }
+                else {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Task wasn't removed.");
+                }
+            }
+            catch (Exception ex) {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine();
+                Console.WriteLine(ex.Message);
+            }
+            finally {
+                Console.ResetColor();
+            }
         }
     }
 }
