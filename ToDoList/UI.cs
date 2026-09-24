@@ -285,7 +285,7 @@ namespace ToDoList {
                 ShowListHeadings();
                 ShowListRow(task);
                 Console.WriteLine();
-                string input = GetStringInput("Is this the task you want to update?", true);
+                string input = GetStringInput("Is this the task you want to update? (Y/N)", true);
                 Console.WriteLine();
                 if (input.ToUpper().Equals("Y")) {
                     string newTitle = GetStringInput("Title", true);
@@ -339,7 +339,7 @@ namespace ToDoList {
                 ShowListHeadings();
                 ShowListRow(task);
                 Console.WriteLine();
-                string input = GetStringInput("Is this the task you want to update?", true);
+                string input = GetStringInput("Is this the task you want to update? (Y/N)", true);
                 Console.WriteLine();
                 if (input.ToUpper().Equals("Y")) {
                     List<string> statuses = [.. Enum.GetNames<Status>()];
@@ -383,7 +383,7 @@ namespace ToDoList {
                 ShowListHeadings();
                 ShowListRow(task);
                 Console.WriteLine();
-                string input = GetStringInput("Is this the task you want to remove?", true);
+                string input = GetStringInput("Is this the task you want to remove? (Y/N)", true);
                 Console.WriteLine();
                 if (input.ToUpper().Equals("Y") && ToDoListManager.RemoveToDo(task)) {
                     Console.ForegroundColor= ConsoleColor.Green;

@@ -1,42 +1,122 @@
 [
   {
+    "Id": 1,
+    "Title": "Create Domain Classes",
+    "DueDate": "2026-09-21",
+    "Status": 5,
+    "Project": "ToDo Console App",
+    "UpdateDate": "2026-09-22T08:38:46.8945409+02:00"
+  },
+  {
+    "Id": 2,
+    "Title": "Create ToDo List Manager",
+    "DueDate": "2026-09-22",
+    "Status": 5,
+    "Project": "ToDo Console App",
+    "UpdateDate": "2026-09-22T08:38:46.8945409+02:00"
+  },
+  {
     "Id": 3,
-    "Title": "Learn C# Fundamentals",
-    "DueDate": "2026-10-22T08:38:46.8943844+02:00",
-    "Status": 1,
-    "Project": "Arbetsmarknadsutbildning",
+    "Title": "Create Main Application Loop",
+    "DueDate": "2026-09-22",
+    "Status": 5,
+    "Project": "ToDo Console App",
     "UpdateDate": "2026-09-22T08:38:46.8945409+02:00"
   },
   {
     "Id": 4,
-    "Title": "Learn React",
-    "DueDate": "2026-11-21T08:38:46.8945424+01:00",
-    "Status": 0,
-    "Project": "Arbetsmarknadsutbildning",
-    "UpdateDate": "2026-09-22T08:38:46.8945427+02:00"
+    "Title": "Create Test Data",
+    "DueDate": "2026-09-25",
+    "Status": 1,
+    "Project": "ToDo Console App",
+    "UpdateDate": "2026-09-22T08:38:46.8945409+02:00"
   },
   {
     "Id": 5,
-    "Title": "Learn C# Classes",
-    "DueDate": "2026-09-26T08:38:46.8945429+02:00",
+    "Title": "Add File Handling",
+    "DueDate": "2026-09-23",
     "Status": 5,
-    "Project": "Arbetsmarknadsutbildning",
-    "UpdateDate": "2026-09-22T08:38:46.8945431+02:00"
+    "Project": "ToDo Console App",
+    "UpdateDate": "2026-09-22T08:38:46.8945409+02:00"
   },
   {
-    "Id": 1,
-    "Title": "Learn SQL",
-    "DueDate": "2026-12-01T00:00:00",
-    "Status": 0,
-    "Project": "New Skills",
-    "UpdateDate": "2026-09-22T15:28:21.7738491+02:00"
+    "Id": 6,
+    "Title": "Add Show Task List Display",
+    "DueDate": "2026-09-23",
+    "Status": 5,
+    "Project": "ToDo Console App",
+    "UpdateDate": "2026-09-22T08:38:46.8945409+02:00"
   },
   {
-    "Id": 2,
-    "Title": "Fix the world",
-    "DueDate": "2000-01-01T00:00:00",
+    "Id": 7,
+    "Title": "Add Main Menu",
+    "DueDate": "2026-09-22",
+    "Status": 5,
+    "Project": "ToDo Console App",
+    "UpdateDate": "2026-09-22T08:38:46.8945409+02:00"
+  },
+  {
+    "Id": 8,
+    "Title": "Add Show Task List Menu",
+    "DueDate": "2026-09-22",
+    "Status": 5,
+    "Project": "ToDo Console App",
+    "UpdateDate": "2026-09-22T08:38:46.8945409+02:00"
+  },
+  {
+    "Id": 9,
+    "Title": "Add Add New Task Logic",
+    "DueDate": "2026-09-23",
+    "Status": 5,
+    "Project": "ToDo Console App",
+    "UpdateDate": "2026-09-22T08:38:46.8945409+02:00"
+  },
+  {
+    "Id": 10,
+    "Title": "Add Edit Task Menu",
+    "DueDate": "2026-09-22",
+    "Status": 5,
+    "Project": "ToDo Console App",
+    "UpdateDate": "2026-09-22T08:38:46.8945409+02:00"
+  },
+  {
+    "Id": 11,
+    "Title": "Add Edit Task Logic",
+    "DueDate": "2026-09-24",
+    "Status": 5,
+    "Project": "ToDo Console App",
+    "UpdateDate": "2026-09-22T08:38:46.8945409+02:00"
+  },
+  {
+    "Id": 12,
+    "Title": "Add Remove Task Logic",
+    "DueDate": "2026-09-24",
+    "Status": 5,
+    "Project": "ToDo Console App",
+    "UpdateDate": "2026-09-22T08:38:46.8945409+02:00"
+  },
+  {
+    "Id": 15,
+    "Title": "Add Update Task Status Logic",
+    "DueDate": "2026-09-24",
+    "Status": 5,
+    "Project": "ToDo Console App",
+    "UpdateDate": "2026-09-22T08:38:46.8945409+02:00"
+  },
+  {
+    "Id": 13,
+    "Title": "Create Diet Plan",
+    "DueDate": "2026-12-31",
     "Status": 0,
-    "Project": "God",
-    "UpdateDate": "2026-09-22T15:30:09.2777533+02:00"
+    "Project": "Beach 2027",
+    "UpdateDate": "2026-09-22T08:38:46.8945409+02:00"
+  },
+  {
+    "Id": 14,
+    "Title": "Create Exercise Plan",
+    "DueDate": "2026-12-31",
+    "Status": 0,
+    "Project": "Beach 2027",
+    "UpdateDate": "2026-09-22T08:38:46.8945409+02:00"
   }
 ]
