@@ -12,6 +12,11 @@ namespace ToDoList {
             WriteIndented = true
         };
 
+        public static ToDo GetTask(int id) {
+            ToDo task = ToDoList.Find(t => t.Id == id) ?? throw new ArgumentException($"There is no task with Id: {id}");
+            return task;
+        }
+
         private static int GetNextAvailableId() {
             var ids = ToDoList.OrderBy(t => t.Id).Select(t => t.Id).ToList();
 
@@ -24,15 +29,10 @@ namespace ToDoList {
             // If no gaps, next ID is last + 1
             return ids.Last() + 1;
         }
-        
+
         public static void AddToDo(string title, DateTime dueDate, string project) {
             int newId = GetNextAvailableId();
             ToDoList.Add(new ToDo(newId, title, dueDate, Status.Not_Started, project));
-        }
-
-        public static ToDo GetTask(int id) {
-            ToDo task = ToDoList.Find(t => t.Id == id) ?? throw new ArgumentException($"There is no task with Id: {id}");
-            return task;
         }
 
         public static void UpdateToDo(ToDo task, string title, DateTime dueDate, string project) {
@@ -42,25 +42,13 @@ namespace ToDoList {
             task.UpdateDate = DateTime.Now;
         }
 
-        public static bool RemoveToDo(ToDo task) {
-            return ToDoList.Remove(task);
-        }
-
         public static void UpdateStatus(ToDo task, Status status) {
             task.Status = status;
             task.UpdateDate = DateTime.Now;
         }
 
-        public static string Save() {
-            try {
-                string jsonString = JsonSerializer.Serialize(ToDoList, s_options);
-                string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", s_fileName);
-                File.WriteAllText(filePath, jsonString);
-                return "ToDo List Saved Successfully!";
-            }
-            catch {
-                throw new Exception("Failed To Save ToDo List");
-            }
+        public static bool RemoveToDo(ToDo task) {
+            return ToDoList.Remove(task);
         }
 
         public static string Load() {
@@ -83,6 +71,18 @@ namespace ToDoList {
                         throw new Exception($"Error parsing JSON: {ex.Message}");
                     }
                 }
+            }
+        }
+
+        public static string Save() {
+            try {
+                string jsonString = JsonSerializer.Serialize(ToDoList, s_options);
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", s_fileName);
+                File.WriteAllText(filePath, jsonString);
+                return "ToDo List Saved Successfully!";
+            }
+            catch {
+                throw new Exception("Failed To Save ToDo List");
             }
         }
     }
