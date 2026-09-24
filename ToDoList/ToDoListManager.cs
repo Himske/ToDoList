@@ -25,10 +25,9 @@ namespace ToDoList {
             return ids.Last() + 1;
         }
         
-        public static void AddToDo(string title, DateTime dueDate, Status status, string project) {
-            // Maybe status should always be "Not Started" when adding a todo
+        public static void AddToDo(string title, DateTime dueDate, string project) {
             int newId = GetNextAvailableId();
-            ToDoList.Add(new ToDo(newId, title, dueDate, status, project));
+            ToDoList.Add(new ToDo(newId, title, dueDate, Status.Not_Started, project));
         }
 
         public static ToDo GetTask(int id) {

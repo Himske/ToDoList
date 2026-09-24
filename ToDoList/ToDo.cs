@@ -15,7 +15,7 @@ namespace ToDoList {
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public DateTime DueDate { get; set; }
-        public Status Status { get; set; }
+        public Status Status { get; set; } = Status.Not_Started;
         public string Project { get; set; } = string.Empty;
         public DateTime UpdateDate { get; set; } = DateTime.Now;
     }

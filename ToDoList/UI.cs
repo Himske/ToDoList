@@ -233,7 +233,7 @@ namespace ToDoList {
                 string dueDateStr = GetStringInput("Due Date(YYYY-MM-DD)");
                 DateTime dueDate = GetDueDate(dueDateStr);
                 string project = GetStringInput("Project");
-                ToDoListManager.AddToDo(title, dueDate, Status.Not_Started, project);
+                ToDoListManager.AddToDo(title, dueDate, project);
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine();
                 Console.WriteLine("Task added successfully.");
