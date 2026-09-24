@@ -101,7 +101,7 @@ namespace ToDoList {
         }
 
         public static void ShowListRowHighlighted(ToDo task) {
-            if (task.DueDate > DateTime.Now && task.Status == Status.Done) {
+            if (task.Status == Status.Done) {
                 Console.ForegroundColor = ConsoleColor.Green;
             }
             else if (task.DueDate < DateTime.Now && task.Status != Status.Done) {
@@ -307,7 +307,7 @@ namespace ToDoList {
                         newProject = task.Project;
                     }
                     if (newTitle != task.Title || newDueDate != task.DueDate || newProject != task.Project) {
-                        ToDoListManager.UpdateToDo(task.Id, newTitle, newDueDate, newProject);
+                        ToDoListManager.UpdateToDo(task, newTitle, newDueDate, newProject);
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine();
                         Console.WriteLine("Task updated successfully.");
@@ -356,7 +356,7 @@ namespace ToDoList {
                         Console.WriteLine("Invalid status");
                     }
                     else if(Enum.TryParse<Status>(newStatus.ToString(), out var status)) {
-                        ToDoListManager.UpdateStatus(id, status);
+                        ToDoListManager.UpdateStatus(task, status);
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine();
                         Console.WriteLine("Status updated successfully.");

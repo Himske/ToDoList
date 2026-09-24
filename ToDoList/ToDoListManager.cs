@@ -36,8 +36,7 @@ namespace ToDoList {
             return task;
         }
 
-        public static void UpdateToDo(int id, string title, DateTime dueDate, string project) {
-            ToDo task = ToDoList.Find(t => t.Id == id) ?? throw new ArgumentException($"There is no task with Id: {id}");
+        public static void UpdateToDo(ToDo task, string title, DateTime dueDate, string project) {
             task.Title = title;
             task.DueDate = dueDate;
             task.Project = project;
@@ -48,8 +47,7 @@ namespace ToDoList {
             return ToDoList.Remove(task);
         }
 
-        public static void UpdateStatus(int id, Status status) {
-            ToDo task = ToDoList.Find(t => t.Id == id) ?? throw new ArgumentException($"There is no task with Id: {id}");
+        public static void UpdateStatus(ToDo task, Status status) {
             task.Status = status;
             task.UpdateDate = DateTime.Now;
         }
