@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ToDoList {
     internal class ToDoListManager {
-        public static List<ToDo> ToDoList { get; set; } = new List<ToDo>();
+        public static List<ToDo> ToDoList { get; set; } = [];
 
         private static IFileManager s_fileManager = new FileManager();
 
