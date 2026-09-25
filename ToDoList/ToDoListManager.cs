@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Text;
-using System.Text.Json;
+using System.Linq;
 
 namespace ToDoList {
     internal class ToDoListManager {
-        public static List<ToDo> ToDoList { get; set; } = [];
-        private static readonly string s_fileName = "todos.json";
-        private static readonly JsonSerializerOptions s_options = new() {
-            WriteIndented = true
-        };
+        public static List<ToDo> ToDoList { get; set; } = new List<ToDo>();
+
+        private static IFileManager s_fileManager = new FileManager();
+
+        public static void SetFileManager(IFileManager fileManager) => s_fileManager = fileManager;
 
         public static ToDo GetTask(int id) {
             ToDo task = ToDoList.Find(t => t.Id == id) ?? throw new ArgumentException($"There is no task with Id: {id}");
@@ -52,38 +50,13 @@ namespace ToDoList {
         }
 
         public static string Load() {
-            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", s_fileName);
-            if (!File.Exists(filePath)) {
-                throw new FileNotFoundException($"{s_fileName} not found.");
-            }
-            else {
-                string jsonString = File.ReadAllText(filePath);
-                if (string.IsNullOrWhiteSpace(jsonString)) {
-                    return $"{s_fileName} is empty.";
-                }
-                else {
-                    try {
-                        ToDoList = JsonSerializer.Deserialize<List<ToDo>>(jsonString) ?? [];
-                        return "ToDo List Loaded Successfully.";
-
-                    }
-                    catch (JsonException ex) {
-                        throw new Exception($"Error parsing JSON: {ex.Message}");
-                    }
-                }
-            }
+            ToDoList = s_fileManager.LoadTodos();
+            return "ToDo List Loaded Successfully.";
         }
 
         public static string Save() {
-            try {
-                string jsonString = JsonSerializer.Serialize(ToDoList, s_options);
-                string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", s_fileName);
-                File.WriteAllText(filePath, jsonString);
-                return "ToDo List Saved Successfully!";
-            }
-            catch {
-                throw new Exception("Failed To Save ToDo List");
-            }
+            s_fileManager.SaveTodos(ToDoList);
+            return "ToDo List Saved Successfully!";
         }
     }
 }

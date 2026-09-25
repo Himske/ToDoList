@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Text;
+using System.IO;
+using System.Linq;
+using System.Threading;
 
 namespace ToDoList {
     internal static class UI {
@@ -199,7 +200,7 @@ namespace ToDoList {
         public static string GetStringInput(string prompt, bool editing = false) {
             string input = GetInput($"{prompt}: ");
             if (!editing && input.Equals(string.Empty)) {
-                throw new NoNullAllowedException($"{prompt} can't be empty!");
+                throw new ArgumentException($"{prompt} can't be empty!");
             }
             return input;
         }
@@ -207,7 +208,7 @@ namespace ToDoList {
         public static int GetIntInput(string prompt) {
             string input = GetInput($"{prompt}: ");
             if (input.Equals(string.Empty)) {
-                throw new NoNullAllowedException($"{prompt} can't be empty!");
+                throw new ArgumentException($"{prompt} can't be empty!");
             }
             if (!int.TryParse(input, out int result)) {
                 throw new ArgumentException($"{input} is not valid number!");
@@ -287,7 +288,7 @@ namespace ToDoList {
                 Console.WriteLine();
                 string input = GetStringInput("Is this the task you want to update? (Y/N)", true);
                 Console.WriteLine();
-                if (input.ToUpper().Equals("Y")) {
+                if (string.Equals(input, "Y", StringComparison.OrdinalIgnoreCase)) {
                     string newTitle = GetStringInput("Title", true);
                     if (newTitle.Equals(string.Empty)) {
                         newTitle = task.Title;
@@ -341,19 +342,20 @@ namespace ToDoList {
                 Console.WriteLine();
                 string input = GetStringInput("Is this the task you want to update? (Y/N)", true);
                 Console.WriteLine();
-                if (input.ToUpper().Equals("Y")) {
-                    List<string> statuses = [.. Enum.GetNames<Status>()];
-                    for (int i=0; i < Enum.GetNames<Status>().Length; i++) {
+                if (string.Equals(input, "Y", StringComparison.OrdinalIgnoreCase)) {
+                    var statuses = Enum.GetNames(typeof(Status));
+                    for (int i = 0; i < statuses.Length; i++) {
                         Console.WriteLine($"{i}. {statuses[i]}");
                     }
                     Console.WriteLine();
-                    Char newStatus = Char.Parse(GetStringInput("New status"));
-                    if (newStatus < '0' || newStatus > '6') {
+                    int idx = GetIntInput("New status");
+                    if (idx < 0 || idx >= statuses.Length) {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine();
                         Console.WriteLine("Invalid status");
                     }
-                    else if(Enum.TryParse<Status>(newStatus.ToString(), out var status)) {
+                    else {
+                        var status = (Status)idx;
                         ToDoListManager.UpdateStatus(task, status);
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine();
